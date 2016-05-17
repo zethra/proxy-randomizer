@@ -23,9 +23,8 @@ def create_instance():
     while True:
         states = client.describe_instance_status(InstanceIds=[instance_id])['InstanceStatuses']
         if len(states) < 1:
-            print("No instances returned")
-            return
-        state = states[0]['InstanceState']
+            continue
+        state = states[0]['InstanceState']['Name']
         if state == 'running':
             break
     client.create_tags(
