@@ -1,10 +1,21 @@
 import boto3
+import sys
 
 
 def main():
-    # terminate_instance()
-    create_instance()
-    # list_instances()
+    if len(sys.argv) != 1:
+        print('Invalid command')
+    elif sys.argv[0] == 'list':
+        list_instances()
+    elif sys.argv[0] == 'create':
+        create_instance()
+    elif sys.argv[0] == 'terminate':
+        terminate_instance()
+    elif sys.argv[0] == 'recreate':
+        terminate_instance()
+        create_instance()
+    else:
+        print('Invalid command')
 
 
 def create_instance():
@@ -50,11 +61,6 @@ def terminate_instance():
                 client.stop_instances(InstanceIds=[i.id])
                 client.terminate_instances(InstanceIds=[str(i.id)])
                 break
-
-
-def get_image_id():
-    ec2 = boto3.resource('ec2', region_name='us-east-1')
-    return ec2.describe_images(Filters=[{'name': 'Ubuntu', 'architecture': 'x86_64'}])
 
 
 def list_running_instances():
